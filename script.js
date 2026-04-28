@@ -1,28 +1,40 @@
-const taskBtn = document.querySelector("#taskBtn");
-const taskList = document.querySelector("#taskList");
-const taskInput = document.querySelector("#taskInput");
+const taskBtn = document.querySelector("#taskBtn")
+const taskList = document.querySelector("#taskList")
+const taskInput = document.querySelector("#taskInput")
 
-function addDeleteFunction(span) {
-  span.addEventListener("click", function() {
-    const li = span.parentElement;
-    taskList.removeChild(li);
-  });
+function createSpan(taskInputValue){
+    const span = document.createElement('span');
+    span.textContent = taskInputValue;
+    span.addEventListener("click", function(){
+        span.classList.toggle('completed');
+    
+    })
+    return span;
 }
 
-document.querySelectorAll(".deleteSpan").forEach(span => {
-  addDeleteFunction(span);
-});
+function createDeleteButton(li){
+    const button = document.createElement('button');
+    button.textContent = 'Excluir';
+        button.addEventListener('click', function(){
+        li.remove();
+    })
+    return button;
+}
 
-taskBtn.addEventListener("click", function() {
-  const taskInputValue = taskInput.value.trim();
-  if (taskInputValue === "") return;
-  const li = document.createElement("li");
-  li.textContent = taskInputValue;
-  const deleteSpan = document.createElement("span");
-  deleteSpan.textContent = "Excluir";
-  deleteSpan.className = "deleteSpan";
-  addDeleteFunction(deleteSpan);
-  li.appendChild(deleteSpan);
-  taskList.appendChild(li);
-  taskInput.value = "";
-});
+function addTask(){
+    const li = document.createElement('li');
+    const taskInputValue = taskInput.value;
+    if (taskInputValue == ''){
+        return
+    }
+
+    const span = createSpan(taskInputValue);
+    const button = createDeleteButton(li);
+
+    li.appendChild(span)
+    li.appendChild(button)
+
+    taskList.appendChild(li);
+}
+
+taskBtn.addEventListener("click", addTask)
